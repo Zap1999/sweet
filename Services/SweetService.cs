@@ -16,9 +16,20 @@ namespace SweetLife.Services
             _context = context;
         }
 
-        public List<Sweet> getSweet()
+        public List<Sweet> GetSweet()
         {
-            return _context.Sweet.FromSqlRaw("SELECT * from sweet").ToList();
+            var sweetList = _context.Sweet
+                .FromSqlRaw("select * from sweet")
+                .ToList();
+/*            var categoryList = _context.Category
+                .FromSqlRaw("select * from category")
+                .ToList();
+            foreach (var sweet in sweetList)
+            {
+                sweet.Category = categoryList.Find(c => c.Id == sweet.CategoryId);
+            }*/
+
+            return sweetList;
         }
     }
 }

@@ -9,7 +9,7 @@ using SweetLife.Services;
 
 namespace Sweets.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/sweet")]
     [ApiController]
     public class SweetController : ControllerBase
     {
@@ -23,14 +23,14 @@ namespace Sweets.Controllers
         [HttpGet]
         public IEnumerable<Sweet> Get()
         {
-            return _service.getSweet();
+            return _service.GetSweet();
         }
 
         // GET: api/Sweet/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [HttpGet("{id}", Name = "GetSweet")]
+        public Sweet Get(int id)
         {
-            return "value";
+            return null;
         }
 
         // POST: api/Sweet

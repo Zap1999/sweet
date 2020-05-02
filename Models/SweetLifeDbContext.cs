@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Logging;
 
 namespace SweetLife.Models
 {
@@ -30,12 +31,12 @@ namespace SweetLife.Models
         public virtual DbSet<SweetStorage> SweetStorage { get; set; }
         public virtual DbSet<UnitWorker> UnitWorker { get; set; }
         public virtual DbSet<User> User { get; set; }
-
+        public static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => { builder.AddConsole(); });
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseLoggerFactory(MyLoggerFactory);
                 optionsBuilder.UseSqlServer("Server=.;Database=sweet_life_v3;Trusted_Connection=True;");
             }
         }
