@@ -2,15 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Sweet.Models
+namespace SweetLife.Models
 {
-    public partial class sweet_life_v3Context : DbContext
+    public partial class SweetLifeDbContext : DbContext
     {
-        public sweet_life_v3Context()
+        public SweetLifeDbContext()
         {
         }
 
-        public sweet_life_v3Context(DbContextOptions<sweet_life_v3Context> options)
+        public SweetLifeDbContext(DbContextOptions<SweetLifeDbContext> options)
             : base(options)
         {
         }

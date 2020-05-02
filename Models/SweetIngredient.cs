@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Sweet.Models
+namespace SweetLife.Models
 {
     public partial class SweetIngredient
     {

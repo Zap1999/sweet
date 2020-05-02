@@ -1,6 +1,6 @@
 using System;
 
-namespace Sweet
+namespace SweetLife
 {
     public class WeatherForecast
     {
