@@ -1,27 +1,25 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SweetLife.Models;
-using Sweets.HelperModels;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
+using Sweets.ApiModels;
 
 
 namespace Sweets.Services
 {
     public class UserService
     {
-        private readonly string REGISTER_SQL_COMMAND = "INSERT INTO [dbo].[user] ([first_name],[last_name],[email],[password],[role_id])"
-            + "VALUES (@first_name, @last_name, @email, @password, @role_id)";
+        private const string RegisterSqlCommand = "INSERT INTO [dbo].[user] ([first_name],[last_name],[email],[password],[role_id]) VALUES (@first_name, @last_name, @email, @password, @role_id)";
 
-        private readonly PasswordHasher passwordHasher;
-        private readonly SweetLifeDbContext context;
+        private readonly SweetLifeDbContext _context;
 
 
         public UserService(SweetLifeDbContext context)
         {
-            this.context = context;
-            passwordHasher = new PasswordHasher();
+            _context = context;
         }
 
         public void Register(User newUser)
@@ -29,30 +27,31 @@ namespace Sweets.Services
             var firstName = new SqlParameter("first_name", newUser.FirstName);
             var lastName = new SqlParameter("last_name", newUser.LastName);
             var email = new SqlParameter("email", newUser.Email);
-            var password = new SqlParameter("password", passwordHasher.Hash(newUser.Password));
+            var password = new SqlParameter("password", PasswordHasher.Hash(newUser.Password));
             var roleId = new SqlParameter("role_id", 1);
 
             #pragma warning disable CS0618 // Type or member is obsolete
-            context.Database.ExecuteSqlCommand(REGISTER_SQL_COMMAND, firstName, lastName, email, password, roleId);
+            _context.Database.ExecuteSqlCommand(RegisterSqlCommand, firstName, lastName, email, password, roleId);
             #pragma warning restore CS0618 // Type or member is obsolete
 
-            context.SaveChanges();
+            _context.SaveChanges();
         }
 
         public User LogIn(LogInForm logInForm)
         {
-            var user = context.User.FromSqlRaw($"SELECT * FROM [dbo].[user] WHERE [user].email = '{logInForm.Email}'").FirstOrDefault();
+            var user = _context.User.FromSqlRaw($"SELECT * FROM [dbo].[user] WHERE [user].email = '{logInForm.Email}'").FirstOrDefault();
 
-            return user == null ? user : passwordHasher.Check(user.Password, logInForm.Password).Verified ? user : null;
+            return user == null ? null : PasswordHasher.Check(user.Password, logInForm.Password).Verified ? user : null;
         }
 
 
-        public sealed class PasswordHasher
+        [SuppressMessage("ReSharper", "ClassNeverInstantiated.Local")]
+        private sealed class PasswordHasher
         {
             private const int SaltSize = 16; // 128 bit 
             private const int KeySize = 32; // 256 bit
 
-            public string Hash(string password)
+            public static string Hash(string password)
             {
                 using var algorithm = new Rfc2898DeriveBytes(
                   password,
@@ -65,7 +64,7 @@ namespace Sweets.Services
                 return $"{10000}.{salt}.{key}";
             }
 
-            public (bool Verified, bool NeedsUpgrade) Check(string hash, string password)
+            public static (bool Verified, bool NeedsUpgrade) Check(string hash, string password)
             {
                 var parts = hash.Split('.', 3);
 

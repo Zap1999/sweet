@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SweetLife.Models;
-using Sweets.HelperModels;
+using Sweets.ApiModels;
 using Sweets.Services;
 
 
@@ -31,12 +31,12 @@ namespace Sweets.Controllers
         }
 
 
-        // Endpoints are not currenltly in use
+        // Endpoints are not currently in use
         // GET: api/User
         [HttpGet]
         public string Get()
         {
-            return "someVal";
+            return null;
         }
 
         // GET: api/User/5

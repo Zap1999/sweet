@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using SweetLife.Models;
-using SweetLife.Services;
 using Sweets.ApiModels;
+using Sweets.Services;
 
 namespace Sweets.Controllers
 {

@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace SweetLife.Models
 {
@@ -31,13 +28,12 @@ namespace SweetLife.Models
         public virtual DbSet<SweetStorage> SweetStorage { get; set; }
         public virtual DbSet<UnitWorker> UnitWorker { get; set; }
         public virtual DbSet<User> User { get; set; }
-        public static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => { builder.AddConsole(); });
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseLoggerFactory(MyLoggerFactory);
-                optionsBuilder.UseSqlServer("Server=.;Database=sweet_life_v3;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=.;Database=sweet_life;Trusted_Connection=True;");
             }
         }
 
