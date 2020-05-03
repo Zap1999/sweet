@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using SweetLife.Models;
-using Sweets.ApiModels;
 using Sweets.Services;
 
 namespace Sweets.Controllers
@@ -20,7 +19,7 @@ namespace Sweets.Controllers
 
         // GET: api/Sweet
         [HttpGet]
-        public IEnumerable<SweetDto> Get()
+        public IEnumerable<Sweet> Get()
         {
             return _service.GetSweet();
         }
