@@ -12,6 +12,12 @@ namespace Sweets.Controllers
     {
         private readonly UserService _service;
 
+
+        public UserController()
+        {
+            _service = new UserService(new SweetLifeDbContext());
+        }
+
         [HttpPost("register")]
         public void Post([FromBody] User user)
         {
@@ -24,11 +30,8 @@ namespace Sweets.Controllers
             return _service.LogIn(form);
         }
 
-        public UserController()
-        {
-            _service = new UserService(new SweetLifeDbContext());
-        }
 
+        // Endpoints are not currenltly in use
         // GET: api/User
         [HttpGet]
         public string Get()

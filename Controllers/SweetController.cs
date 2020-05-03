@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SweetLife.Models;
 using SweetLife.Services;
+using Sweets.ApiModels;
 
 namespace Sweets.Controllers
 {
@@ -14,6 +15,8 @@ namespace Sweets.Controllers
     public class SweetController : ControllerBase
     {
         private readonly SweetService _service;
+
+
         public SweetController()
         {
             _service = new SweetService(new SweetLifeDbContext());
@@ -21,11 +24,13 @@ namespace Sweets.Controllers
 
         // GET: api/Sweet
         [HttpGet]
-        public IEnumerable<Sweet> Get()
+        public IEnumerable<SweetDto> Get()
         {
             return _service.GetSweet();
         }
 
+
+        // Endpoints are not currently in use
         // GET: api/Sweet/5
         [HttpGet("{id}", Name = "GetSweet")]
         public Sweet Get(int id)

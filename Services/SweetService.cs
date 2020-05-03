@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SweetLife.Models;
+using Sweets.ApiModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,20 +17,26 @@ namespace SweetLife.Services
             _context = context;
         }
 
-        public List<Sweet> GetSweet()
+        public List<SweetDto> GetSweet()
         {
-            var sweetList = _context.Sweet
-                .FromSqlRaw("select * from sweet")
-                .ToList();
-/*            var categoryList = _context.Category
-                .FromSqlRaw("select * from category")
-                .ToList();
+            var sweetList = _context.Sweet.FromSqlRaw("SELECT * FROM sweet").ToList();
+            var categoryList = _context.Category.FromSqlRaw("SELECT * FROM category").ToList();
+            var sweetDtoList = new List<SweetDto>();
+
             foreach (var sweet in sweetList)
             {
-                sweet.Category = categoryList.Find(c => c.Id == sweet.CategoryId);
-            }*/
+                var category = categoryList.Find(c => c.Id == sweet.CategoryId);
+                var sweetDto = new SweetDto() { 
+                    Id = sweet.Id, 
+                    Description = sweet.Description, 
+                    Name = sweet.Name, 
+                    Price = sweet.Price, 
+                    Category = category.Name 
+                };
+                sweetDtoList.Add(sweetDto);
+            }
 
-            return sweetList;
+            return sweetDtoList;
         }
     }
 }

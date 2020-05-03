@@ -46,6 +46,7 @@ namespace Sweets.Services
             return user == null ? user : passwordHasher.Check(user.Password, logInForm.Password).Verified ? user : null;
         }
 
+
         public sealed class PasswordHasher
         {
             private const int SaltSize = 16; // 128 bit 
