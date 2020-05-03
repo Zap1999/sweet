@@ -61,6 +61,7 @@ namespace Sweets.Services
 
             _context.Database.ExecuteSqlCommand(
                 "dbo.SaveManufacturingOrder @DeadLineDate, @FactoryUnitId, @StatusId, @ManufacturingOrderItems", parameters);
+            _context.SaveChanges();
         }
     }
 }

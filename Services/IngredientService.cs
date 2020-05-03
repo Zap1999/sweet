@@ -22,9 +22,7 @@ namespace Sweets.Services
             var price = new SqlParameter("price", ingredient.Price);
             var measurementUnitId = new SqlParameter("measurement_unit_id", ingredient.MeasurementUnitId);
             
-            #pragma warning disable CS0618 // Type or member is obsolete
             _context.Database.ExecuteSqlCommand(InsertIngredientSqlCommand, name, price, measurementUnitId);
-            #pragma warning restore CS0618 // Type or member is obsolete
             _context.SaveChanges();
         }
     }

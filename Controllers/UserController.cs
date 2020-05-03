@@ -29,33 +29,5 @@ namespace Sweets.Controllers
         {
             return _service.LogIn(form);
         }
-
-
-        // Endpoints are not currently in use
-        // GET: api/User
-        [HttpGet]
-        public string Get()
-        {
-            return null;
-        }
-
-        // GET: api/User/5
-        [HttpGet("{id}", Name = "GetUser")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // PUT: api/User/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

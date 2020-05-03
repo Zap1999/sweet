@@ -30,10 +30,7 @@ namespace Sweets.Services
             var password = new SqlParameter("password", PasswordHasher.Hash(newUser.Password));
             var roleId = new SqlParameter("role_id", 1);
 
-            #pragma warning disable CS0618 // Type or member is obsolete
             _context.Database.ExecuteSqlCommand(RegisterSqlCommand, firstName, lastName, email, password, roleId);
-            #pragma warning restore CS0618 // Type or member is obsolete
-
             _context.SaveChanges();
         }
 

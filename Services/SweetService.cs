@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SweetLife.Models;
 
@@ -7,6 +8,9 @@ namespace Sweets.Services
 {
     public class SweetService
     {
+        private const string SaveSweetSqlCommand =
+            "INSERT INTO [dbo].[sweet] ([name], [description], [price], [category_id]) VALUES (@name, @description, @price, @category_id)";
+        
         private readonly SweetLifeDbContext _context;
 
         
@@ -30,6 +34,17 @@ namespace Sweets.Services
             }
 
             return sweetList;
+        }
+
+        public void Save(Sweet sweet)
+        {
+            var name = new SqlParameter("name", sweet.Name);
+            var description = new SqlParameter("description", sweet.Description);
+            var price = new SqlParameter("price", sweet.Price);
+            var categoryId = new SqlParameter("category_id", sweet.CategoryId);
+
+            _context.Database.ExecuteSqlCommand(SaveSweetSqlCommand, name, description, price, categoryId);
+            _context.SaveChanges();
         }
     }
 }
