@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using SweetLife.Models;
+using Sweets.ApiModels;
 using Sweets.Services;
 
 namespace Sweets.Controllers
@@ -18,7 +19,7 @@ namespace Sweets.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<MeasurementUnit> Get()
+        public IEnumerable<MeasurementUnitDto> Get()
         {
             return _service.GetMeasurementUnit();
         }

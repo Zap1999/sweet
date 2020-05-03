@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using SweetLife.Models;
+using Sweets.ApiModels;
 
 namespace Sweets.Services
 {
@@ -15,9 +16,11 @@ namespace Sweets.Services
             _context = context;
         }
 
-        public IEnumerable<MeasurementUnit> GetMeasurementUnit()
+        public IEnumerable<MeasurementUnitDto> GetMeasurementUnit()
         {
-            return _context.MeasurementUnit.FromSqlRaw("SELECT * FROM measurement_unit").ToList();
+            var measurementUnitList = _context.MeasurementUnit.FromSqlRaw("SELECT * FROM measurement_unit").ToList();
+
+            return measurementUnitList.Select(measurementUnit => new MeasurementUnitDto() {Id = measurementUnit.Id, Name = measurementUnit.Name}).ToList();
         }
     }
 }
