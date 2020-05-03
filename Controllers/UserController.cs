@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SweetLife.Models;
 using Sweets.HelperModels;
 using Sweets.Services;
+
 
 namespace Sweets.Controllers
 {
@@ -35,9 +31,9 @@ namespace Sweets.Controllers
 
         // GET: api/User
         [HttpGet]
-        public IEnumerable<string> Get()
+        public string Get()
         {
-            return new string[] { "value1", "value2" };
+            return "someVal";
         }
 
         // GET: api/User/5
