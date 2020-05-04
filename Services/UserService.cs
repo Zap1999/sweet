@@ -95,27 +95,10 @@ namespace Sweets.Services
 
         public IEnumerable<User> GetUsersByRoleId(int roleId)
         {
-            var output = new SqlParameter
-            {
-                SqlDbType = SqlDbType.Structured,
-                Direction = ParameterDirection.Output,
-                ParameterName = "UserList"
-            };
-            
-            var parameters = new[] {
-                new SqlParameter
-                {
-                    SqlDbType = SqlDbType.BigInt,
-                    Direction = ParameterDirection.Input,
-                    ParameterName = "RoleId",
-                    Value = roleId
-                },
-                output
-            };
-            _context.Database.ExecuteSqlRaw("dbo.GetUsersByRoleId @RoleId", parameters);
+            var userList = _context.User.FromSqlRaw($"dbo.GetUsersByRoleId {roleId}").ToList();
+            userList.ForEach(u => u.FactoryUnit = null);
 
-            var obj = output.Value;
-            return (IEnumerable<User>) obj;
+            return userList;
         }
     }
 }
