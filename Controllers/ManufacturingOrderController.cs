@@ -17,6 +17,12 @@ namespace Sweets.Controllers
             _service = new ManufacturingOrderService(new SweetLifeDbContext());
         }
 
+        [HttpPut("{manufacturingOrderId}")]
+        public void UpdateManufacturingOrder([FromRoute] int manufacturingOrderId, [FromBody] ManufacturingOrder manufacturingOrder)
+        {
+            _service.Update(manufacturingOrderId, manufacturingOrder);
+        }
+
         [HttpPost]
         public void Post([FromBody] ManufacturingOrderPostDto manufacturingOrderPostDto)
         {

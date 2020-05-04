@@ -28,24 +28,14 @@ namespace Sweets.Services
             _context.SaveChanges();
         }
 
-        public IngredientStorage UpdateIngredientStorage(int ingredientId, int factoryId, decimal count)
+        public void UpdateIngredientStorage(int ingredientId, int factoryId, decimal count)
         {
             var ingredientIdParam = new SqlParameter("ingredient_id", ingredientId);
             var factoryIdParam = new SqlParameter("factory_id", factoryId);
             var countParam = new SqlParameter("count", count);
             _context.Database.ExecuteSqlCommand(UpdateIngredientStorageSqlCommand, ingredientIdParam, factoryIdParam,
                 countParam);
-
-            var ingredientStorageItem = new IngredientStorage()
-            {
-                IngredientId = ingredientId,
-                FactoryId = factoryId,
-                Count = count,
-                Factory = null,
-                Ingredient = null
-            };
-            
-            return ingredientStorageItem;
+            _context.SaveChanges();
         }
     }
 }

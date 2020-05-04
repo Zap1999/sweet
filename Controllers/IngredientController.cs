@@ -23,9 +23,9 @@ namespace Sweets.Controllers
         }
 
         [HttpPut("{ingredientId}/{factoryId}")]
-        public IngredientStorage UpdateIngredientStorage([FromRoute] int ingredientId, [FromRoute] int factoryId, [FromBody] decimal count)
+        public void UpdateIngredientStorage([FromRoute] int ingredientId, [FromRoute] int factoryId, [FromBody] decimal count)
         {
-            return _service.UpdateIngredientStorage(ingredientId, factoryId, count);
+            _service.UpdateIngredientStorage(ingredientId, factoryId, count);
         }
     }
 }

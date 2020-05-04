@@ -8,12 +8,27 @@ namespace Sweets.Services
 {
     public class ManufacturingOrderService
     {
+        private const string ManufacturingOrderUpdateSqlCommand =
+            "UPDATE [dbo].[manufacturing_order] SET [status_id] = @status_id, [factory_unit_id] = @factory_unit_id, [deadline_date] = @deadline_date WHERE id = @id";
+        
         private readonly SweetLifeDbContext _context;
 
 
         public ManufacturingOrderService(SweetLifeDbContext context)
         {
             _context = context;
+        }
+
+        public void Update(int manufacturingOrderId, ManufacturingOrder manufacturingOrder)
+        {
+            var id = new SqlParameter("id", manufacturingOrderId);
+            var statusId = new SqlParameter("status_id", manufacturingOrder.StatusId);
+            var factoryUnitId = new SqlParameter("factory_unit_id", manufacturingOrder.FactoryUnitId);
+            var deadlineDate = new SqlParameter("deadline_date", manufacturingOrder.Date);
+
+            _context.Database.ExecuteSqlCommand(ManufacturingOrderUpdateSqlCommand, id, statusId, factoryUnitId,
+                deadlineDate);
+            _context.SaveChanges();
         }
 
         public void Post(ManufacturingOrderPostDto manufacturingOrderPostDto)
@@ -26,8 +41,7 @@ namespace Sweets.Services
                 dateTable.Rows.Add(orderItem.SweetId, orderItem.Count);
             }
             
-            SqlParameter[] parameters =
-            {
+            var parameters = new[] {
                 new SqlParameter
                 {
                     SqlDbType = SqlDbType.Structured,
