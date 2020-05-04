@@ -46,5 +46,13 @@ namespace Sweets.Services
             _context.Database.ExecuteSqlCommand(SaveSweetSqlCommand, name, description, price, categoryId);
             _context.SaveChanges();
         }
+
+        public IEnumerable<Sweet> GetSweetsByCategoryId(int categoryId)
+        {
+            var sweets = _context.Sweet.FromSqlRaw($"dbo.GetSweetsByCategoryId {categoryId}").ToList();
+            sweets.ForEach(s => s.Category = null);
+
+            return sweets;
+        }
     }
 }
