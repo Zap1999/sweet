@@ -2,6 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using SweetLife.Models;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
@@ -88,6 +91,31 @@ namespace Sweets.Services
 
                 return (verified, needsUpgrade);
             }
+        }
+
+        public IEnumerable<User> GetUsersByRoleId(int roleId)
+        {
+            var output = new SqlParameter
+            {
+                SqlDbType = SqlDbType.Structured,
+                Direction = ParameterDirection.Output,
+                ParameterName = "UserList"
+            };
+            
+            var parameters = new[] {
+                new SqlParameter
+                {
+                    SqlDbType = SqlDbType.BigInt,
+                    Direction = ParameterDirection.Input,
+                    ParameterName = "RoleId",
+                    Value = roleId
+                },
+                output
+            };
+            _context.Database.ExecuteSqlRaw("dbo.GetUsersByRoleId @RoleId", parameters);
+
+            var obj = output.Value;
+            return (IEnumerable<User>) obj;
         }
     }
 }
