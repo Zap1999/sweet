@@ -21,5 +21,11 @@ namespace Sweets.Controllers
         {
             _service.Save(ingredient);
         }
+
+        [HttpPut("{ingredientId}/{factoryId}")]
+        public IngredientStorage UpdateIngredientStorage([FromRoute] int ingredientId, [FromRoute] int factoryId, [FromBody] decimal count)
+        {
+            return _service.UpdateIngredientStorage(ingredientId, factoryId, count);
+        }
     }
 }

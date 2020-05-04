@@ -7,6 +7,8 @@ namespace Sweets.Services
     public class IngredientService
     {
         private const string InsertIngredientSqlCommand = "INSERT INTO [dbo].[ingredient] ([name], [price], [measurement_unit_id]) VALUES (@name, @price, @measurement_unit_id)";
+        private const string UpdateIngredientStorageSqlCommand =
+            "UPDATE [dbo].[ingredient_storage] SET [count] = @count WHERE ingredient_id = @ingredient_id AND factory_id = @factory_id";
 
         private readonly SweetLifeDbContext _context;
 
@@ -24,6 +26,26 @@ namespace Sweets.Services
             
             _context.Database.ExecuteSqlCommand(InsertIngredientSqlCommand, name, price, measurementUnitId);
             _context.SaveChanges();
+        }
+
+        public IngredientStorage UpdateIngredientStorage(int ingredientId, int factoryId, decimal count)
+        {
+            var ingredientIdParam = new SqlParameter("ingredient_id", ingredientId);
+            var factoryIdParam = new SqlParameter("factory_id", factoryId);
+            var countParam = new SqlParameter("count", count);
+            _context.Database.ExecuteSqlCommand(UpdateIngredientStorageSqlCommand, ingredientIdParam, factoryIdParam,
+                countParam);
+
+            var ingredientStorageItem = new IngredientStorage()
+            {
+                IngredientId = ingredientId,
+                FactoryId = factoryId,
+                Count = count,
+                Factory = null,
+                Ingredient = null
+            };
+            
+            return ingredientStorageItem;
         }
     }
 }
