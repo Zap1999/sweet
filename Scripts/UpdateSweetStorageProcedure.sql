@@ -10,6 +10,7 @@ BEGIN
 
     UPDATE [dbo].[sweet_storage]
     SET count = @Count
-    WHERE sweet_id = @SweetId AND factory_id = @FactoryID;
+    WHERE sweet_id = @SweetId
+      AND factory_id = @FactoryID;
 END
 GO

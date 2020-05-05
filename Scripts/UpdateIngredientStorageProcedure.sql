@@ -10,6 +10,7 @@ BEGIN
 
     UPDATE [dbo].[ingredient_storage]
     SET count = @Count
-    WHERE ingredient_id = @IngredientId AND factory_id = @FactoryID;
+    WHERE ingredient_id = @IngredientId
+      AND factory_id = @FactoryID;
 END
 GO

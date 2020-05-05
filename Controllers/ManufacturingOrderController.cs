@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections;
+using Microsoft.AspNetCore.Mvc;
 using SweetLife.Models;
 using Sweets.ApiModels;
 using Sweets.Services;
@@ -15,6 +16,12 @@ namespace Sweets.Controllers
         public ManufacturingOrderController()
         {
             _service = new ManufacturingOrderService(new SweetLifeDbContext());
+        }
+
+        [HttpGet("{id}")]
+        public ManufacturingOrderFullDto GetFullManufacturingOrder([FromRoute] int id)
+        {
+            return _service.GetFullManufacturingOrder(id);
         }
 
         [HttpPut("{manufacturingOrderId}")]
