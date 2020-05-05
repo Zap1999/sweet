@@ -6,7 +6,7 @@ namespace Sweets.ApiModels
 {
     public class ManufacturingOrderPostDto
     {
-        public DateTime Date { get; set; }
+        public DateTime DeadLineDate { get; set; }
         
         public long FactoryUnitId { get; set; }
         

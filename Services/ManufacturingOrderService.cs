@@ -60,7 +60,7 @@ namespace Sweets.Services
                     SqlDbType = SqlDbType.Date,
                     Direction = ParameterDirection.Input,
                     ParameterName = "DeadLineDate",
-                    Value = manufacturingOrderPostDto.Date
+                    Value = manufacturingOrderPostDto.DeadLineDate
                 },
                 new SqlParameter
                 {
