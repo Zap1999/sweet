@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using SweetLife.Models;
 using Sweets.Services;
 
@@ -14,6 +16,12 @@ namespace Sweets.Controllers
         public FactoryUnitController()
         {
             _service = new FactoryUnitService(new SweetLifeDbContext());
+        }
+
+        [HttpGet("{factoryUnitId}")]
+        public IEnumerable<UnitWorker> GetUnitWorkers([FromRoute] long factoryUnitId)
+        {
+            return _service.GetUnitWorkers(factoryUnitId);
         }
         
         [HttpPost]
