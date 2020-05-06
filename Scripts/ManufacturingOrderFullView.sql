@@ -43,3 +43,5 @@ FROM manufacturing_order
          JOIN sweet_ingredient ON (sweet.id = sweet_ingredient.sweet_id)
          JOIN ingredient ON (sweet_ingredient.ingredient_id = ingredient.id)
          JOIN measurement_unit ON (ingredient.measurement_unit_id = measurement_unit.id)
+
+GO
