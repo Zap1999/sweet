@@ -43,5 +43,11 @@ namespace Sweets.Controllers
         {
             _service.Delete(manufacturingOrderId);
         }
+        
+        [HttpDelete("{manufacturingOrderId}/{sweetId}")]
+        public void DeleteItem([FromRoute] long manufacturingOrderId, [FromRoute] long sweetId)
+        {
+            _service.Delete(manufacturingOrderId, sweetId);
+        }
     }
 }

@@ -29,5 +29,11 @@ namespace Sweets.Controllers
         {
              _service.Save(factoryUnit);
         }
+        
+        [HttpDelete("{unitId}")]
+        public void Delete([FromRoute] long unitId)
+        {
+            _service.Delete(unitId);
+        }
     }
 }

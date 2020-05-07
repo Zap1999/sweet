@@ -241,5 +241,11 @@ namespace Sweets.Services
             _context.Database.ExecuteSqlRaw($"dbo.DeleteManufacturingOrder {manufacturingOrderId}");
             _context.SaveChanges();
         }
+        
+        public void Delete(long manufacturingOrderId, long sweetId)
+        {
+            _context.Database.ExecuteSqlRaw($"dbo.DeleteManufacturingOrderItem {manufacturingOrderId}, {sweetId}");
+            _context.SaveChanges();
+        }
     }
 }

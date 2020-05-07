@@ -18,5 +18,11 @@ namespace Sweets.Services
             _context.Database.ExecuteSqlRaw($"dbo.SaveUnitWorker {userId}, {unitId}");
             _context.SaveChanges();
         }
+
+        public void Delete(long unitId, long userId)
+        {
+            _context.Database.ExecuteSqlRaw($"dbo.DeleteUnitWorker {unitId}, {userId}");
+            _context.SaveChanges();
+        }
     }
 }

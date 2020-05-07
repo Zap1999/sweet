@@ -86,5 +86,11 @@ namespace Sweets.Services
                     }
                 }).ToList();
         }
+
+        public void Delete(long unitId)
+        {
+            _context.Database.ExecuteSqlRaw($"dbo.DeleteFactoryUnit {unitId}");
+            _context.SaveChanges();
+        }
     }
 }

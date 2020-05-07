@@ -17,9 +17,15 @@ namespace Sweets.Controllers
         }
         
         [HttpPost("{userId}/{unitId}")]
-        public void saveUnitWorker([FromRoute] long userId, [FromRoute] long unitId)
+        public void Save([FromRoute] long userId, [FromRoute] long unitId)
         {
             _service.SaveUnitWorker(userId, unitId);
+        }
+
+        [HttpDelete("{unitId}/{userId}")]
+        public void Delete([FromRoute] long userId, [FromRoute] long unitId)
+        {
+            _service.Delete(unitId, userId);
         }
     }
 }
