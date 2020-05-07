@@ -152,7 +152,7 @@ namespace SweetLife.Models
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.DeadlineDate)
-                    .HasColumnName("date")
+                    .HasColumnName("deadline_date")
                     .HasColumnType("date");
 
                 entity.Property(e => e.FactoryUnitId).HasColumnName("factory_unit_id");

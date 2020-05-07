@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SweetLife.Models;
@@ -84,7 +85,7 @@ namespace Sweets.Services
             _context.SaveChanges();
         }
 
-        public ManufacturingOrderFullDto GetFullManufacturingOrder(int id)
+        public ManufacturingOrderFullDto GetFullManufacturingOrder(long id)
         {
             var factory = DbProviderFactories.GetFactory(_context.Database.GetDbConnection());
 
@@ -246,6 +247,26 @@ namespace Sweets.Services
         {
             _context.Database.ExecuteSqlRaw($"dbo.DeleteManufacturingOrderItem {manufacturingOrderId}, {sweetId}");
             _context.SaveChanges();
+        }
+
+        public List<ManufacturingOrderFullDto> GetFullManufacturingOrderForDate(DateTime deadlineDate)
+        {
+            var ids = _context.ManufacturingOrder
+                .Where(o => o.DeadlineDate == deadlineDate)
+                .Select(o => o.Id)
+                .ToList();
+            
+            return ids.Select(GetFullManufacturingOrder).ToList();
+        }
+
+        public List<ManufacturingOrderFullDto> GetFullManufacturingOrderForUnit(long unitId)
+        {
+            var ids = _context.ManufacturingOrder
+                .Where(o => o.FactoryUnitId == unitId)
+                .Select(o => o.Id)
+                .ToList();
+            
+            return ids.Select(GetFullManufacturingOrder).ToList();
         }
     }
 }

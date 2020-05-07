@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Security;
 using Microsoft.AspNetCore.Mvc;
 using SweetLife.Models;
@@ -23,6 +26,20 @@ namespace Sweets.Controllers
         public ManufacturingOrderFullDto GetFullManufacturingOrder([FromRoute] int id)
         {
             return _service.GetFullManufacturingOrder(id);
+        }
+
+        [HttpGet("date/{deadLineDate}")]
+        public List<ManufacturingOrderFullDto> GetFullManufacturingOrderForDate([FromRoute] string deadlineDate)
+        {
+            var date = DateTime.ParseExact(deadlineDate, "yyyyMMdd",
+                CultureInfo.InvariantCulture);
+            return _service.GetFullManufacturingOrderForDate(date);
+        }
+        
+        [HttpGet("unit/{unitId}")]
+        public List<ManufacturingOrderFullDto> GetFullManufacturingOrderForDate([FromRoute] long unitId)
+        {
+            return _service.GetFullManufacturingOrderForUnit(unitId);
         }
 
         [HttpPut("{manufacturingOrderId}")]
