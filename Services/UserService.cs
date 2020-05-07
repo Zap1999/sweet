@@ -31,7 +31,7 @@ namespace Sweets.Services
             var lastName = new SqlParameter("last_name", newUser.LastName);
             var email = new SqlParameter("email", newUser.Email);
             var password = new SqlParameter("password", PasswordHasher.Hash(newUser.Password));
-            var roleId = new SqlParameter("role_id", 1);
+            var roleId = new SqlParameter("role_id", newUser.RoleId);
 
             _context.Database.ExecuteSqlCommand(RegisterSqlCommand, firstName, lastName, email, password, roleId);
             _context.SaveChanges();

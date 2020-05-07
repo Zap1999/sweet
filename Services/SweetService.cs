@@ -46,5 +46,10 @@ namespace Sweets.Services
 
             return sweets;
         }
+
+        public void Delete(long sweetId)
+        {
+            _context.Database.ExecuteSqlRaw($"dbo.DeleteSweet {sweetId}");
+        }
     }
 }
