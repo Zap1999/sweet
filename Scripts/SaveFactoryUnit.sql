@@ -1,4 +1,7 @@
-﻿CREATE PROCEDURE SaveFactoryUnit @ControllerId BIGINT,
+﻿USE sweet_life
+GO
+
+CREATE PROCEDURE SaveFactoryUnit @ControllerId BIGINT,
                                  @CategoryId BIGINT,
                                  @FactoryId BIGINT
 AS

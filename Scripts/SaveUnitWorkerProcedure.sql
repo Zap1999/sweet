@@ -1,4 +1,7 @@
-﻿CREATE PROCEDURE SaveUnitWorker @WorkerId BIGINT,
+﻿USE sweet_life
+GO
+
+CREATE PROCEDURE SaveUnitWorker @WorkerId BIGINT,
                                 @UnitId BIGINT
 AS
 BEGIN
