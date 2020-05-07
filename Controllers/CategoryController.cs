@@ -21,5 +21,11 @@ namespace Sweets.Controllers
         {
             _service.Save(category);
         }
+
+        [HttpDelete("{categoryId}")]
+        public void Delete([FromRoute] long categoryId)
+        {
+            _service.Delete(categoryId);
+        }
     }
 }

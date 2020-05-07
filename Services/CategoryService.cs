@@ -18,5 +18,11 @@ namespace Sweets.Services
             _context.Database.ExecuteSqlRaw($"dbo.SaveCategory {category.Name}");
             _context.SaveChanges();
         }
+
+        public void Delete(long categoryId)
+        {
+            _context.Database.ExecuteSqlRaw($"dbo.DeleteCategory {categoryId}");
+            _context.SaveChanges();
+        }
     }
 }
