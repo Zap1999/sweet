@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Security;
 using Microsoft.AspNetCore.Mvc;
 using SweetLife.Models;
 using Sweets.ApiModels;
@@ -12,7 +13,7 @@ namespace Sweets.Controllers
     {
         private readonly ManufacturingOrderService _service;
 
-        
+
         public ManufacturingOrderController()
         {
             _service = new ManufacturingOrderService(new SweetLifeDbContext());
@@ -25,7 +26,8 @@ namespace Sweets.Controllers
         }
 
         [HttpPut("{manufacturingOrderId}")]
-        public void UpdateManufacturingOrder([FromRoute] int manufacturingOrderId, [FromBody] ManufacturingOrder manufacturingOrder)
+        public void UpdateManufacturingOrder([FromRoute] int manufacturingOrderId,
+            [FromBody] ManufacturingOrder manufacturingOrder)
         {
             _service.Update(manufacturingOrderId, manufacturingOrder);
         }
@@ -34,6 +36,12 @@ namespace Sweets.Controllers
         public void Post([FromBody] ManufacturingOrderPostDto manufacturingOrderPostDto)
         {
             _service.Post(manufacturingOrderPostDto);
+        }
+
+        [HttpDelete("{manufacturingOrderId}")]
+        public void Delete([FromRoute] long manufacturingOrderId)
+        {
+            _service.Delete(manufacturingOrderId);
         }
     }
 }

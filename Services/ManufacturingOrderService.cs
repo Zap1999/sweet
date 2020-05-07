@@ -235,5 +235,11 @@ namespace Sweets.Services
 
             return manufacturingOrderFullDto;
         }
+
+        public void Delete(long manufacturingOrderId)
+        {
+            _context.Database.ExecuteSqlRaw($"dbo.DeleteManufacturingOrder {manufacturingOrderId}");
+            _context.SaveChanges();
+        }
     }
 }
