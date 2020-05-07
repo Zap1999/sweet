@@ -29,5 +29,11 @@ namespace Sweets.Controllers
         {
             _service.UpdateSweetStorage(sweetId, factoryId, count);
         }
+
+        [HttpDelete("{factoryId}/{sweetId}")]
+        public void DeleteSweetStorageRecord([FromRoute] long factoryId, [FromRoute] long sweetId)
+        {
+            _service.Delete(factoryId, sweetId);
+        }
     }
 }

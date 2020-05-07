@@ -72,5 +72,11 @@ namespace Sweets.Services
                     Factory = new Factory {Id = factoryId, Address = factoryAddress, FactoryUnit = null}
                 }).ToList();
         }
+
+        public void Delete(long factoryId, long sweetId)
+        {
+            _context.Database.ExecuteSqlRaw($"dbo.DeleteSweetStorageRecord {factoryId}, {sweetId}");
+            _context.SaveChanges();
+        }
     }
 }
