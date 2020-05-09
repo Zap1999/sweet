@@ -18,7 +18,7 @@ namespace Sweets.Controllers
             _service = new FactoryUnitService(new SweetLifeDbContext());
         }
 
-        [HttpGet("{factoryUnitId}")]
+        [HttpGet("workers/{factoryUnitId}")]
         public IEnumerable<UnitWorker> GetUnitWorkers([FromRoute] long factoryUnitId)
         {
             return _service.GetUnitWorkers(factoryUnitId);
