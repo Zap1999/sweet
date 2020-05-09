@@ -1,4 +1,7 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SweetLife.Models;
 
@@ -36,6 +39,11 @@ namespace Sweets.Services
             _context.Database.ExecuteSqlCommand(UpdateIngredientStorageSqlCommand, ingredientIdParam, factoryIdParam,
                 countParam);
             _context.SaveChanges();
+        }
+
+        public IEnumerable<Ingredient> GetAll()
+        {
+            return _context.Ingredient.FromSqlRaw("SELECT * FROM ingredient").ToList();
         }
     }
 }

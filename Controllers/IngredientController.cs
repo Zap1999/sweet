@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using SweetLife.Models;
 using Sweets.Services;
 
@@ -14,6 +15,12 @@ namespace Sweets.Controllers
         public IngredientController()
         {
             _service = new IngredientService(new SweetLifeDbContext());
+        }
+
+        [HttpGet]
+        public IEnumerable<Ingredient> GetAll()
+        {
+            return _service.GetAll();
         }
 
         [HttpPost]
