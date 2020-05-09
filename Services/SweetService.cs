@@ -127,10 +127,10 @@ namespace Sweets.Services
                             Ingredient = null
                         }
                     }
-                });
+                });    
             }
 
-            var sweets = new HashSet<Sweet>(sweetList);
+            var sweets = sweetList.GroupBy(s => s.Id).Select(g => g.First()).ToList();
             return sweets.Select(
                 sweet => new SweetFullDto
                 {
