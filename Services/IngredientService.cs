@@ -43,7 +43,14 @@ namespace Sweets.Services
 
         public IEnumerable<Ingredient> GetAll()
         {
-            return _context.Ingredient.FromSqlRaw("SELECT * FROM ingredient").ToList();
+            var ingredients = _context.Ingredient.FromSqlRaw("SELECT * FROM ingredient").ToList();
+            var measurementUnits = _context.MeasurementUnit.FromSqlRaw("SELECT * FROM measurement_unit").ToList();
+            foreach (var ingredient in ingredients)
+            {
+                ingredient.MeasurementUnit = measurementUnits.Find(mu => mu.Id == ingredient.MeasurementUnitId);
+            }
+
+            return ingredients;
         }
     }
 }
