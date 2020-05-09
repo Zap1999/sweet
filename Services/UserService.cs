@@ -40,8 +40,14 @@ namespace Sweets.Services
         public User LogIn(LogInForm logInForm)
         {
             var user = _context.User.FromSqlRaw($"SELECT * FROM [dbo].[user] WHERE [user].email = '{logInForm.Email}'").FirstOrDefault();
+            if (user == null)
+            {
+                return null;
+            }
+            var role = _context.Role.FromSqlRaw($"SELECT * FROM role WHERE role.id = {user.RoleId}").First();
+            user.Role = role;
 
-            return user == null ? null : PasswordHasher.Check(user.Password, logInForm.Password).Verified ? user : null;
+            return PasswordHasher.Check(user.Password, logInForm.Password).Verified ? user : null;
         }
 
 
