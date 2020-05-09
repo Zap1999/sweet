@@ -130,7 +130,7 @@ namespace Sweets.Services
                 });
             }
 
-            var sweets = sweetList.Distinct();
+            var sweets = new HashSet<Sweet>(sweetList);
             return sweets.Select(
                 sweet => new SweetFullDto
                 {
