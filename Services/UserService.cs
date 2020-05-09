@@ -106,5 +106,16 @@ namespace Sweets.Services
 
             return userList;
         }
+
+        public IEnumerable<Role> GetAllRoles()
+        {
+            var roles = _context.Role.FromSqlRaw("SELECT * FROM role").ToList();
+            foreach (var role in roles)
+            {
+                role.User = null;
+            }
+
+            return roles;
+        }
     }
 }

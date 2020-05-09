@@ -25,6 +25,12 @@ namespace Sweets.Controllers
             return _service.GetUsersByRoleId(roleId);
         }
 
+        [HttpGet("role")]
+        public IEnumerable<Role> GetAllRoles()
+        {
+            return _service.GetAllRoles();
+        }
+
         [HttpPost("register")]
         public void Post([FromBody] User user)
         {
