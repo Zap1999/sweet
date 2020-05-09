@@ -36,10 +36,34 @@ namespace Sweets.Services
             return sweetList;
         }
 
-        public void Save(Sweet sweet)
+        public void Save(Sweet sweet, IEnumerable<SweetIngredient> ingredients)
         {
-            _context.Database.ExecuteSqlRaw(
-                $"dbo.SaveSweet {sweet.Name}, {sweet.Description}, {sweet.Price}, {sweet.CategoryId}");
+            var dateTable = new DataTable();
+            dateTable.Columns.Add(new DataColumn("ingredient_id", typeof(long)));
+            dateTable.Columns.Add(new DataColumn("count", typeof(decimal)));
+            foreach (var ingredient in ingredients)
+            {
+                dateTable.Rows.Add(ingredient.IngredientId, ingredient.Count);
+            }
+
+            var parameters = new[]
+            {
+                new SqlParameter("Name", sweet.Name),
+                new SqlParameter("Description", sweet.Description),
+                new SqlParameter("Price", sweet.Price),
+                new SqlParameter("CategoryId", sweet.CategoryId),
+                new SqlParameter
+                {
+                    SqlDbType = SqlDbType.Structured,
+                    Direction = ParameterDirection.Input,
+                    ParameterName = "SweetIngredientsList",
+                    TypeName = "[dbo].[SweetIngredients]",
+                    Value = dateTable
+                }
+            };
+            
+            _context.Database.ExecuteSqlCommand("dbo.SaveSweet @Name, @Description, @Price, @CategoryId, @SweetIngredientsList",
+                parameters);
             _context.SaveChanges();
         }
 

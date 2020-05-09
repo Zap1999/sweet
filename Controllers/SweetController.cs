@@ -38,9 +38,9 @@ namespace Sweets.Controllers
         }
 
         [HttpPost]
-        public void Post([FromBody] Sweet sweet)
+        public void Post([FromBody] SweetPostDto sweetPostDto)
         {
-            _service.Save(sweet);
+            _service.Save(sweetPostDto.Sweet, sweetPostDto.SweetIngredients);
         }
 
         [HttpDelete("{sweetId}")]

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using SweetLife.Models;
 
 namespace Sweets.Services
@@ -23,6 +25,17 @@ namespace Sweets.Services
         {
             _context.Database.ExecuteSqlRaw($"dbo.DeleteCategory {categoryId}");
             _context.SaveChanges();
+        }
+
+        public IEnumerable<Category> GetAll()
+        {
+            var list = _context.Category.FromSqlRaw("SELECT * FROM category").ToList();
+            list.ForEach(c =>
+            {
+                c.FactoryUnit = null;
+                c.Sweet = null;
+            });
+            return list;
         }
     }
 }
