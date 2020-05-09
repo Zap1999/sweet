@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using SweetLife.Models;
+using Sweets.ApiModels;
 using Sweets.Services;
 
 namespace Sweets.Controllers
@@ -17,7 +18,7 @@ namespace Sweets.Controllers
         }
         
         [HttpGet]
-        public IEnumerable<Factory> GetAll()
+        public IEnumerable<FullFactoryDto> GetAll()
         {
             return _service.GetAll();
         }
