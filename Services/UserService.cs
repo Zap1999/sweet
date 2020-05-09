@@ -45,6 +45,7 @@ namespace Sweets.Services
                 return null;
             }
             var role = _context.Role.FromSqlRaw($"SELECT * FROM role WHERE role.id = {user.RoleId}").First();
+            role.User = null;
             user.Role = role;
 
             return PasswordHasher.Check(user.Password, logInForm.Password).Verified ? user : null;
