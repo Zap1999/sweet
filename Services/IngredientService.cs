@@ -48,6 +48,7 @@ namespace Sweets.Services
             foreach (var ingredient in ingredients)
             {
                 ingredient.MeasurementUnit = measurementUnits.Find(mu => mu.Id == ingredient.MeasurementUnitId);
+                ingredient.MeasurementUnit.Ingredient = null;
             }
 
             return ingredients;
