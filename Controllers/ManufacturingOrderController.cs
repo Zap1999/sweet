@@ -35,11 +35,24 @@ namespace Sweets.Controllers
                 CultureInfo.InvariantCulture);
             return _service.GetFullManufacturingOrderForDate(date);
         }
-        
+
         [HttpGet("unit/{unitId}")]
         public List<ManufacturingOrderFullDto> GetFullManufacturingOrderForDate([FromRoute] long unitId)
         {
             return _service.GetFullManufacturingOrderForUnit(unitId);
+        }
+
+        [HttpGet("expanse/data/{factoryId}/{startDate}/{endDate}")]
+        public List<Object> GetFactoryExpanseDataForPeriod([FromRoute] long factoryId, [FromRoute] string startDate,
+            [FromRoute] string endDate)
+        {
+            return _service.GetFactoryExpanseDataForPeriod(
+                factoryId,
+                DateTime.ParseExact(startDate, "yyyyMMdd",
+                    CultureInfo.InvariantCulture),
+                DateTime.ParseExact(endDate, "yyyyMMdd",
+                    CultureInfo.InvariantCulture)
+            );
         }
 
         [HttpPut("{manufacturingOrderId}")]
@@ -60,7 +73,7 @@ namespace Sweets.Controllers
         {
             _service.Delete(manufacturingOrderId);
         }
-        
+
         [HttpDelete("{manufacturingOrderId}/{sweetId}")]
         public void DeleteItem([FromRoute] long manufacturingOrderId, [FromRoute] long sweetId)
         {
