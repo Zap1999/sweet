@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using SweetLife.Models;
+using Sweets.ApiModels;
 using Sweets.Services;
 
 namespace Sweets.Controllers
@@ -22,6 +23,12 @@ namespace Sweets.Controllers
         public IEnumerable<Sweet> Get()
         {
             return _service.GetSweet();
+        }
+
+        [HttpGet("full")]
+        public IEnumerable<SweetFullDto> GetFullAll()
+        {
+            return _service.GetFullAll();
         }
 
         [HttpGet("{categoryId}")]
