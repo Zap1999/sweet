@@ -8,6 +8,6 @@ namespace Sweets.ApiModels
     {
         public IEnumerable<Ingredient> Ingredients { get; set; }
         
-        public Dictionary<string, int> Counts { get; set; }
+        public Dictionary<string, decimal> Counts { get; set; }
     }
 }

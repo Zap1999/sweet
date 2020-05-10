@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using SweetLife.Models;
 using Sweets.ApiModels;
@@ -35,6 +37,29 @@ namespace Sweets.Controllers
         public IEnumerable<Sweet> GetSweetsByCategoryId([FromRoute] int categoryId)
         {
             return _service.GetSweetsByCategoryId(categoryId);
+        }
+
+        [HttpGet("expanse/{startDate}/{endDate}")]
+        public SweetExpanseDataDto GetAllExpanseDataForPeriod([FromRoute] string startDate, [FromRoute] string endDate)
+        {
+            return _service.GetAllExpanseDataForPeriod(
+                DateTime.ParseExact(startDate, "yyyyMMdd",
+                    CultureInfo.InvariantCulture),
+                DateTime.ParseExact(endDate, "yyyyMMdd",
+                    CultureInfo.InvariantCulture)
+                );
+        }
+        
+        [HttpGet("expanse/{factoryId}/{startDate}/{endDate}")]
+        public SweetExpanseDataDto GetAllExpanseDataForPeriod([FromRoute] long factoryId, [FromRoute] string startDate, [FromRoute] string endDate)
+        {
+            return _service.GetAllExpanseDataForFactoryAndPeriod(
+                factoryId,
+                DateTime.ParseExact(startDate, "yyyyMMdd",
+                    CultureInfo.InvariantCulture),
+                DateTime.ParseExact(endDate, "yyyyMMdd",
+                    CultureInfo.InvariantCulture)
+            );
         }
 
         [HttpPost]

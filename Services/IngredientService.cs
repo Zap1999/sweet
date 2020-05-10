@@ -82,7 +82,7 @@ namespace Sweets.Services
             if (rows.Count == 0) return null;
 
             var ingredients = new List<Ingredient>();
-            var idToCount = new Dictionary<string, int>();
+            var idToCount = new Dictionary<string, decimal>();
             foreach (DataRow row in rows)
             {
                 ingredients.Add(new Ingredient
@@ -100,7 +100,7 @@ namespace Sweets.Services
                 });
                 idToCount.Add(
                     ((long) row["iId"]).ToString(),
-                    (int) row["iCount"]
+                    (decimal) row["iCount"]
                     );
             }
 
@@ -132,7 +132,7 @@ namespace Sweets.Services
             if (rows.Count == 0) return null;
 
             var ingredients = new List<Ingredient>();
-            var idToCount = new Dictionary<string, int>();
+            var idToCount = new Dictionary<string, decimal>();
             foreach (DataRow row in rows)
             {
                 ingredients.Add(new Ingredient
@@ -150,7 +150,7 @@ namespace Sweets.Services
                 });
                 idToCount.Add(
                     ((long) row["iId"]).ToString(),
-                    (int) row["iCount"]
+                    (decimal) row["iCount"]
                 );
             }
 

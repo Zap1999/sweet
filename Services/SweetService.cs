@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
@@ -158,6 +159,110 @@ namespace Sweets.Services
                         sweetIngredients.FindAll(si => si.SweetId == sweet.Id)
                     )
                 }).ToList();
+        }
+
+        public SweetExpanseDataDto GetAllExpanseDataForPeriod(DateTime startDate, DateTime endDate)
+        {
+            var factory = DbProviderFactories.GetFactory(_context.Database.GetDbConnection());
+
+            using var cmd = factory.CreateCommand();
+            if (cmd == null) return null;
+
+            cmd.CommandText = $"EXEC dbo.GetAllSweetsForPeriod '{startDate:yyyy-MM-dd}', '{endDate:yyyy-MM-dd}'";
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = _context.Database.GetDbConnection();
+            using var adapter = factory.CreateDataAdapter();
+            if (adapter == null) return null;
+
+            adapter.SelectCommand = cmd;
+            var dataTable = new DataTable();
+            adapter.Fill(dataTable);
+
+            var rows = dataTable.Rows;
+            if (rows.Count == 0) return null;
+
+            var sweets = new List<Sweet>();
+            var idToCount = new Dictionary<string, int>();
+            foreach (DataRow row in rows)
+            {
+                sweets.Add(new Sweet
+                {
+                    Id = (long) row["sId"],
+                    Name = (string) row["sName"],
+                    Price = (decimal) row["sPrice"],
+                    Description = (string) row["sDescription"],
+                    CategoryId = (long) row["cId"],
+                    Category =  new Category
+                    {
+                        Id = (long) row["cId"],
+                        Name = (string) row["cName"],
+                        FactoryUnit = null,
+                        Sweet = null
+                    }
+                });
+                idToCount.Add(
+                    ((long) row["sId"]).ToString(),
+                    (int) row["iCount"]
+                );
+            }
+
+            return new SweetExpanseDataDto
+            {
+                Sweets = sweets,
+                Counts = idToCount
+            };
+        }
+
+        public SweetExpanseDataDto GetAllExpanseDataForFactoryAndPeriod(long factoryId, DateTime startDate, DateTime endDate)
+        {
+            var factory = DbProviderFactories.GetFactory(_context.Database.GetDbConnection());
+
+            using var cmd = factory.CreateCommand();
+            if (cmd == null) return null;
+
+            cmd.CommandText = $"EXEC dbo.GetAllSweetsForFactoryAndPeriod {factoryId}, '{startDate:yyyy-MM-dd}', '{endDate:yyyy-MM-dd}'";
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = _context.Database.GetDbConnection();
+            using var adapter = factory.CreateDataAdapter();
+            if (adapter == null) return null;
+
+            adapter.SelectCommand = cmd;
+            var dataTable = new DataTable();
+            adapter.Fill(dataTable);
+
+            var rows = dataTable.Rows;
+            if (rows.Count == 0) return null;
+
+            var sweets = new List<Sweet>();
+            var idToCount = new Dictionary<string, int>();
+            foreach (DataRow row in rows)
+            {
+                sweets.Add(new Sweet
+                {
+                    Id = (long) row["sId"],
+                    Name = (string) row["sName"],
+                    Price = (decimal) row["sPrice"],
+                    Description = (string) row["sDescription"],
+                    CategoryId = (long) row["cId"],
+                    Category =  new Category
+                    {
+                        Id = (long) row["cId"],
+                        Name = (string) row["cName"],
+                        FactoryUnit = null,
+                        Sweet = null
+                    }
+                });
+                idToCount.Add(
+                    ((long) row["sId"]).ToString(),
+                    (int) row["iCount"]
+                );
+            }
+
+            return new SweetExpanseDataDto
+            {
+                Sweets = sweets,
+                Counts = idToCount
+            };
         }
     }
 }
