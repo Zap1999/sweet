@@ -121,10 +121,19 @@ namespace Sweets.Services
 
         public IEnumerable<User> GetAll()
         {
-            var userList = _context.User.FromSqlRaw("SELECT * FROM [user]").ToList();
-            userList.ForEach(u => u.FactoryUnit = null);
+            var userList = _context.User.FromSqlRaw("SELECT * FROM [user]").Include(u => u.Role).ToList();
+            userList.ForEach(u =>
+            {
+                u.FactoryUnit = null;
+                u.Role.User = null;
+            });
 
             return userList;
+        }
+
+        public UserExpanseDataDto GetAllExpanseDataForPeriod(DateTime startDate, DateTime endDate)
+        {
+            return null;
         }
     }
 }

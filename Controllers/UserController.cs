@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using SweetLife.Models;
 using Sweets.ApiModels;
@@ -37,7 +39,18 @@ namespace Sweets.Controllers
         {
             return _service.GetAllRoles();
         }
-
+        
+        [HttpGet("expanse/{startDate}/{endDate}")]
+        public UserExpanseDataDto GetAllExpanseDataForPeriod([FromRoute] string startDate, [FromRoute] string endDate)
+        {
+            return _service.GetAllExpanseDataForPeriod(
+                DateTime.ParseExact(startDate, "yyyyMMdd",
+                    CultureInfo.InvariantCulture),
+                DateTime.ParseExact(endDate, "yyyyMMdd",
+                    CultureInfo.InvariantCulture)
+            );
+        }
+        
         [HttpPost("register")]
         public void Post([FromBody] User user)
         {
