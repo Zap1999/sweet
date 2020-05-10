@@ -8,6 +8,6 @@ namespace Sweets.ApiModels
     {
         public IEnumerable<User> Users { get; set; }
 
-        public Dictionary<string, int> Expanses { get; set; }
+        public Dictionary<string, decimal> Expanses { get; set; }
     }
 }

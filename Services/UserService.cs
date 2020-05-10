@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
@@ -133,7 +134,56 @@ namespace Sweets.Services
 
         public UserExpanseDataDto GetAllExpanseDataForPeriod(DateTime startDate, DateTime endDate)
         {
-            return null;
+            var factory = DbProviderFactories.GetFactory(_context.Database.GetDbConnection());
+
+            using var cmd = factory.CreateCommand();
+            if (cmd == null) return null;
+
+            cmd.CommandText = $"EXEC dbo.GetAllUsersForPeriod '{startDate:yyyy-MM-dd}', '{endDate:yyyy-MM-dd}'";
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = _context.Database.GetDbConnection();
+            using var adapter = factory.CreateDataAdapter();
+            if (adapter == null) return null;
+
+            adapter.SelectCommand = cmd;
+            var dataTable = new DataTable();
+            adapter.Fill(dataTable);
+
+            var rows = dataTable.Rows;
+            if (rows.Count == 0) return null;
+
+            var users = new List<User>();
+            var salaries = new Dictionary<string, decimal>();
+            foreach (DataRow row in rows)
+            {
+                users.Add(new User
+                {
+                    Id = (long) row["uId"],
+                    FirstName = (string) row["uFirstName"],
+                    LastName = (string) row["uLastName"],
+                    Email = (string) row["uEmail"],
+                    Password = (string) row["uPassword"],
+                    RoleId = (long) row["rId"],
+                    FactoryUnit = null,
+                    Role = new Role
+                    {
+                        Id = (long) row["rId"],
+                        Name = (string) row["rName"],
+                        Salary = (long) row["rSalary"],
+                        User = null
+                    }
+                });
+                salaries.Add(
+                    ((long) row["uId"]).ToString(),
+                    (decimal) row["totalSalary"]
+                );
+            }
+
+            return new UserExpanseDataDto
+            {
+                Users = users,
+                Expanses = salaries
+            };
         }
     }
 }
