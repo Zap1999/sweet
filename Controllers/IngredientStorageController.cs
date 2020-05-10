@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using SweetLife.Models;
 using Sweets.Services;
 
@@ -14,6 +15,12 @@ namespace Sweets.Controllers
         public IngredientStorageController()
         {
             _service = new IngredientStorageService(new SweetLifeDbContext());
+        }
+
+        [HttpGet("{factoryId}")]
+        public IEnumerable<IngredientStorage> GetByFactoryId([FromRoute] long factoryId)
+        {
+            return _service.GetByFactoryId(factoryId);
         }
 
         [HttpPut("{ingredientId}/{factoryId}")]
