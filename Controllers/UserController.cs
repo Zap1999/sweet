@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using SweetLife.Models;
 using Sweets.ApiModels;
@@ -17,6 +18,12 @@ namespace Sweets.Controllers
         public UserController()
         {
             _service = new UserService(new SweetLifeDbContext());
+        }
+
+        [HttpGet]
+        public IEnumerable<User> GetAll()
+        {
+            return _service.GetAll();
         }
 
         [HttpGet("{roleId}")]
