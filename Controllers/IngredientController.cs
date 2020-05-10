@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using SweetLife.Models;
+using Sweets.ApiModels;
 using Sweets.Services;
 
 namespace Sweets.Controllers
@@ -11,7 +15,7 @@ namespace Sweets.Controllers
     {
         private readonly IngredientService _service;
 
-        
+
         public IngredientController()
         {
             _service = new IngredientService(new SweetLifeDbContext());
@@ -23,6 +27,18 @@ namespace Sweets.Controllers
             return _service.GetAll();
         }
 
+        [HttpGet("expanse/{startDate}/{endDate}")]
+        public IngredientsExpanseDataDto GetIngredientsExpanseData([FromRoute] string startDate,
+            [FromRoute] string endDate)
+        {
+            return _service.GetAllIngredientsExpanseDataForPeriod(
+                DateTime.ParseExact(startDate, "yyyyMMdd",
+                    CultureInfo.InvariantCulture),
+                DateTime.ParseExact(endDate, "yyyyMMdd",
+                    CultureInfo.InvariantCulture)
+            );
+        }
+
         [HttpPost]
         public void Post([FromBody] Ingredient ingredient)
         {
@@ -30,7 +46,8 @@ namespace Sweets.Controllers
         }
 
         [HttpPut("{ingredientId}/{factoryId}")]
-        public void UpdateIngredientStorage([FromRoute] int ingredientId, [FromRoute] int factoryId, [FromBody] decimal count)
+        public void UpdateIngredientStorage([FromRoute] int ingredientId, [FromRoute] int factoryId,
+            [FromBody] decimal count)
         {
             _service.UpdateIngredientStorage(ingredientId, factoryId, count);
         }
