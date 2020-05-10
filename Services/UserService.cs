@@ -16,7 +16,8 @@ namespace Sweets.Services
 {
     public class UserService
     {
-        private const string RegisterSqlCommand = "INSERT INTO [dbo].[user] ([first_name],[last_name],[email],[password],[role_id]) VALUES (@first_name, @last_name, @email, @password, @role_id)";
+        private const string RegisterSqlCommand =
+            "INSERT INTO [dbo].[user] ([first_name],[last_name],[email],[password],[role_id]) VALUES (@first_name, @last_name, @email, @password, @role_id)";
 
         private readonly SweetLifeDbContext _context;
 
@@ -26,7 +27,7 @@ namespace Sweets.Services
             _context = context;
         }
 
-        public void Register(User newUser)
+        public long Register(User newUser)
         {
             var firstName = new SqlParameter("first_name", newUser.FirstName);
             var lastName = new SqlParameter("last_name", newUser.LastName);
@@ -36,15 +37,23 @@ namespace Sweets.Services
 
             _context.Database.ExecuteSqlCommand(RegisterSqlCommand, firstName, lastName, email, password, roleId);
             _context.SaveChanges();
+
+            return LogIn(new LogInForm
+            {
+                Email = newUser.Email,
+                Password = newUser.Password
+            }).Id;
         }
 
         public User LogIn(LogInForm logInForm)
         {
-            var user = _context.User.FromSqlRaw($"SELECT * FROM [dbo].[user] WHERE [user].email = '{logInForm.Email}'").FirstOrDefault();
+            var user = _context.User.FromSqlRaw($"SELECT * FROM [dbo].[user] WHERE [user].email = '{logInForm.Email}'")
+                .FirstOrDefault();
             if (user == null)
             {
                 return null;
             }
+
             var role = _context.Role.FromSqlRaw($"SELECT * FROM role WHERE role.id = {user.RoleId}").First();
             role.User = null;
             user.Role = role;
@@ -62,10 +71,10 @@ namespace Sweets.Services
             public static string Hash(string password)
             {
                 using var algorithm = new Rfc2898DeriveBytes(
-                  password,
-                  SaltSize,
-                  10000,
-                  HashAlgorithmName.SHA512);
+                    password,
+                    SaltSize,
+                    10000,
+                    HashAlgorithmName.SHA512);
                 var key = Convert.ToBase64String(algorithm.GetBytes(KeySize));
                 var salt = Convert.ToBase64String(algorithm.Salt);
 
@@ -79,7 +88,7 @@ namespace Sweets.Services
                 if (parts.Length != 3)
                 {
                     throw new FormatException("Unexpected hash format. " +
-                      "Should be formatted as `{iterations}.{salt}.{hash}`");
+                                              "Should be formatted as `{iterations}.{salt}.{hash}`");
                 }
 
                 var iterations = Convert.ToInt32(parts[0]);
@@ -89,10 +98,10 @@ namespace Sweets.Services
                 var needsUpgrade = iterations != 10000;
 
                 using var algorithm = new Rfc2898DeriveBytes(
-                  password,
-                  salt,
-                  iterations,
-                  HashAlgorithmName.SHA512);
+                    password,
+                    salt,
+                    iterations,
+                    HashAlgorithmName.SHA512);
                 var keyToCheck = algorithm.GetBytes(KeySize);
 
                 var verified = keyToCheck.SequenceEqual(key);

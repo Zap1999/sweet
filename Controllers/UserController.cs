@@ -52,9 +52,9 @@ namespace Sweets.Controllers
         }
         
         [HttpPost("register")]
-        public void Post([FromBody] User user)
+        public long Post([FromBody] User user)
         {
-            _service.Register(user);
+            return _service.Register(user);
         }
 
         [HttpPost("login")]
