@@ -105,6 +105,7 @@ namespace Sweets.Services
                 foreach (var unit in fact.FactoryUnit)
                 {
                     workers.AddRange(unitWorkers.FindAll(w => w.UnitId == unit.Id));
+                    workers.ForEach(w => w.Unit = null);
                 }
 
                 dto.UnitWorkers = workers;
