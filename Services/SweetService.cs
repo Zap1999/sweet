@@ -21,17 +21,12 @@ namespace Sweets.Services
 
         public IEnumerable<Sweet> GetSweet()
         {
-            var sweetList = _context.Sweet.FromSqlRaw("SELECT * FROM sweet").ToList();
-            var categoryList = _context.Category.FromSqlRaw("SELECT * FROM category").ToList();
-
-            foreach (var sweet in sweetList)
+            var sweetList = _context.Sweet.FromSqlRaw("SELECT * FROM sweet").Include(s => s.Category).ToList();
+            sweetList.ForEach(s =>
             {
-                var category = categoryList.Find(c => c.Id.Equals(sweet.CategoryId));
-                if (category == null) continue;
-                category.FactoryUnit = null;
-                category.Sweet = null;
-                sweet.Category = category;
-            }
+                s.Category.FactoryUnit = null;
+                s.Category.Sweet = null;
+            });
 
             return sweetList;
         }

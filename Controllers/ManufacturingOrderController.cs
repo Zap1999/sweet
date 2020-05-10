@@ -42,6 +42,12 @@ namespace Sweets.Controllers
             return _service.GetFullManufacturingOrderForUnit(unitId);
         }
 
+        [HttpGet("status")]
+        public IEnumerable<ManufacturingOrderStatus> GetAllStatuses()
+        {
+            return _service.GetAllStatuses();
+        }
+
         [HttpGet("expanse/data/{factoryId}/{startDate}/{endDate}")]
         public List<Object> GetFactoryExpanseDataForPeriod([FromRoute] long factoryId, [FromRoute] string startDate,
             [FromRoute] string endDate)

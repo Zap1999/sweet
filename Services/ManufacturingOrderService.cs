@@ -291,5 +291,13 @@ namespace Sweets.Services
             // TODO: mocked 
             return null;
         }
+
+        public IEnumerable<ManufacturingOrderStatus> GetAllStatuses()
+        {
+            var list = _context.ManufacturingOrderStatus.FromSqlRaw("SELECT * FROM manufacturing_order_status").ToList();
+            list.ForEach(s => s.ManufacturingOrder = null);
+
+            return list;
+        }
     }
 }
