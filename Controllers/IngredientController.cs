@@ -39,6 +39,20 @@ namespace Sweets.Controllers
             );
         }
 
+        [HttpGet("expanse/{factoryId}/{startDate}/{endDate}")]
+        public IngredientsExpanseDataDto GetIngredientsExpanseData([FromRoute] long factoryId,
+            [FromRoute] string startDate,
+            [FromRoute] string endDate)
+        {
+            return _service.GetAllIngredientsExpanseDataForFactoryAndPeriod(
+                factoryId,
+                DateTime.ParseExact(startDate, "yyyyMMdd",
+                    CultureInfo.InvariantCulture),
+                DateTime.ParseExact(endDate, "yyyyMMdd",
+                    CultureInfo.InvariantCulture)
+            );
+        }
+
         [HttpPost]
         public void Post([FromBody] Ingredient ingredient)
         {

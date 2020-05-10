@@ -110,5 +110,55 @@ namespace Sweets.Services
                 Counts = idToCount
             };
         }
+
+        public IngredientsExpanseDataDto GetAllIngredientsExpanseDataForFactoryAndPeriod(long factoryId, DateTime startDate, DateTime endDate)
+        {
+            var factory = DbProviderFactories.GetFactory(_context.Database.GetDbConnection());
+
+            using var cmd = factory.CreateCommand();
+            if (cmd == null) return null;
+
+            cmd.CommandText = $"EXEC dbo.GetAllIngredientsForFactoryAndPeriod {factoryId}, '{startDate:yyyy-MM-dd}', '{endDate:yyyy-MM-dd}'";
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = _context.Database.GetDbConnection();
+            using var adapter = factory.CreateDataAdapter();
+            if (adapter == null) return null;
+
+            adapter.SelectCommand = cmd;
+            var dataTable = new DataTable();
+            adapter.Fill(dataTable);
+
+            var rows = dataTable.Rows;
+            if (rows.Count == 0) return null;
+
+            var ingredients = new List<Ingredient>();
+            var idToCount = new Dictionary<string, int>();
+            foreach (DataRow row in rows)
+            {
+                ingredients.Add(new Ingredient
+                {
+                    Id = (long) row["iId"],
+                    Name = (string) row["iName"],
+                    Price = (decimal) row["iPrice"],
+                    MeasurementUnitId = (long) row["muId"],
+                    MeasurementUnit = new MeasurementUnit
+                    {
+                        Id = (long) row["muId"],
+                        Name = (string) row["muName"],
+                        Ingredient = null
+                    }
+                });
+                idToCount.Add(
+                    ((long) row["iId"]).ToString(),
+                    (int) row["iCount"]
+                );
+            }
+
+            return new IngredientsExpanseDataDto
+            {
+                Ingredients = ingredients,
+                Counts = idToCount
+            };
+        }
     }
 }
