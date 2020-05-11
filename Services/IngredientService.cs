@@ -20,11 +20,13 @@ namespace Sweets.Services
             "UPDATE [dbo].[ingredient_storage] SET [count] = @count WHERE ingredient_id = @ingredient_id AND factory_id = @factory_id";
 
         private readonly SweetLifeDbContext _context;
+        private readonly FactoryService _factoryService;
 
 
         public IngredientService(SweetLifeDbContext context)
         {
             _context = context;
+            _factoryService = new FactoryService(context);
         }
 
         public void Save(Ingredient ingredient)
@@ -35,6 +37,10 @@ namespace Sweets.Services
 
             _context.Database.ExecuteSqlCommand(InsertIngredientSqlCommand, name, price, measurementUnitId);
             _context.SaveChanges();
+            
+            _context.Ingredient.Load();
+            var id = _context.Ingredient.FromSqlRaw("SELECT * FROM ingredient WHERE ingredient.id = (SELECT MAX(id) FROM ingredient)").First().Id;
+            _context.Database.ExecuteSqlRaw($"INSERT INTO ingredient_storage (ingredient_id, factory_id, [count]) SELECT {id}, factory.id, 0 FROM factory");
         }
 
         public void UpdateIngredientStorage(int ingredientId, int factoryId, decimal count)
