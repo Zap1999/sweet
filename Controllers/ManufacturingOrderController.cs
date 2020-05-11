@@ -48,19 +48,6 @@ namespace Sweets.Controllers
             return _service.GetAllStatuses();
         }
 
-        [HttpGet("expanse/data/{factoryId}/{startDate}/{endDate}")]
-        public List<Object> GetFactoryExpanseDataForPeriod([FromRoute] long factoryId, [FromRoute] string startDate,
-            [FromRoute] string endDate)
-        {
-            return _service.GetFactoryExpanseDataForPeriod(
-                factoryId,
-                DateTime.ParseExact(startDate, "yyyyMMdd",
-                    CultureInfo.InvariantCulture),
-                DateTime.ParseExact(endDate, "yyyyMMdd",
-                    CultureInfo.InvariantCulture)
-            );
-        }
-
         [HttpPut("{manufacturingOrderId}")]
         public void UpdateManufacturingOrder([FromRoute] int manufacturingOrderId,
             [FromBody] ManufacturingOrder manufacturingOrder)

@@ -273,29 +273,6 @@ namespace Sweets.Services
             return ids.Select(GetFullManufacturingOrder).ToList();
         }
 
-        public List<object> GetFactoryExpanseDataForPeriod(long factoryId, DateTime startDate, DateTime endDate)
-        {
-            var factory = DbProviderFactories.GetFactory(_context.Database.GetDbConnection());
-
-            using var cmd = factory.CreateCommand();
-            if (cmd == null) return null;
-            
-            // cmd.CommandText = $"SELECT * FROM ManufacturingOrderFull WHERE ManufacturingOrderId = {id}";
-            cmd.CommandType = CommandType.Text;
-            cmd.Connection = _context.Database.GetDbConnection();
-            using var adapter = factory.CreateDataAdapter();
-            if (adapter == null) return null;
-            
-            adapter.SelectCommand = cmd;
-            var dataTable = new DataTable();
-            adapter.Fill(dataTable);
-
-            var rows = dataTable.Rows;
-            if (rows.Count == 0) return null;
-            // TODO: mocked 
-            return null;
-        }
-
         public IEnumerable<ManufacturingOrderStatus> GetAllStatuses()
         {
             var list = _context.ManufacturingOrderStatus.FromSqlRaw("SELECT * FROM manufacturing_order_status").ToList();
