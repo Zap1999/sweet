@@ -24,8 +24,8 @@ namespace Sweets.Controllers
             return _service.GetSweetStorageForFactory(factoryId);
         }
         
-        [HttpPut("{sweetId}/{factoryId}")]
-        public void UpdateSweetStorage([FromRoute] int sweetId, [FromRoute] int factoryId, [FromBody] int count)
+        [HttpPut("{sweetId}/{factoryId}/{count}")]
+        public void UpdateSweetStorage([FromRoute] int sweetId, [FromRoute] int factoryId, [FromRoute] int count)
         {
             _service.UpdateSweetStorage(sweetId, factoryId, count);
         }

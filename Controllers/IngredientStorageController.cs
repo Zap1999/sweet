@@ -23,8 +23,8 @@ namespace Sweets.Controllers
             return _service.GetByFactoryId(factoryId);
         }
 
-        [HttpPut("{ingredientId}/{factoryId}")]
-        public void UpdateIngredientStorage([FromRoute] int ingredientId, [FromRoute] int factoryId, [FromBody] decimal count)
+        [HttpPut("{ingredientId}/{factoryId}/{count}")]
+        public void UpdateIngredientStorage([FromRoute] int ingredientId, [FromRoute] int factoryId, [FromRoute] decimal count)
         {
             _service.UpdateIngredientStorage(ingredientId, factoryId, count);
         }
