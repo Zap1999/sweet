@@ -135,6 +135,13 @@ namespace Sweets.Services
                 var ingredientPrice = (decimal) rows[i]["IngredientPrice"];
                 var measurementUnitId = (long) rows[i]["MeasurementUnitId"];
                 var measurementUnitName = (string) rows[i]["MeasurementUnitName"];
+                
+                var sweetId = (long) rows[i]["SweetId"];
+                var manufacturingOrderItemCount = (int) rows[i]["ManufacturingOrderItemCount"];
+                var sweetName = (string) rows[i]["SweetName"];
+                var sweetDescription = (string) rows[i]["SweetDescription"];
+                var sweetPrice = (decimal) rows[i]["SweetPrice"];
+                
                 sweetIngredientList.Add(new SweetIngredient
                 {
                     Count = sweetIngredientCount,
@@ -150,14 +157,11 @@ namespace Sweets.Services
                             Ingredient = null,
                             Name = measurementUnitName
                         }
-                    }
+                    },
+                    SweetId = sweetId,
+                    IngredientId = ingredientId
                 });
-
-                var sweetId = (long) rows[i]["SweetId"];
-                var manufacturingOrderItemCount = (int) rows[i]["ManufacturingOrderItemCount"];
-                var sweetName = (string) rows[i]["SweetName"];
-                var sweetDescription = (string) rows[i]["SweetDescription"];
-                var sweetPrice = (decimal) rows[i]["SweetPrice"];
+                
                 manufacturingOrderList.Add(new ManufacturingOrderItem
                 {
                     Count = manufacturingOrderItemCount,
@@ -230,7 +234,7 @@ namespace Sweets.Services
                     },
                     DeadlineDate = manufacturingOrderDeadlineDate
                 },
-                ManufacturingOrderItems = manufacturingOrderList,
+                ManufacturingOrderItems = manufacturingOrderList.GroupBy(i => i.SweetId).Select(g => g.First()).ToList(),
                 SweetsIngredients = sweetIngredientList
             };
 
