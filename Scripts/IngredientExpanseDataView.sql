@@ -3,17 +3,16 @@ GO
 
 CREATE VIEW IngredientsExpanseData AS
 
-SELECT mo.creation_date AS moCreationDate,
-       mo.status_id     AS moStatusId,
-       moi.count        AS moiCount,
-       i.id             AS iId,
-       i.name           AS iName,
-       i.price          AS iPrice,
-       mu.id            AS muId,
-       mu.name          AS muName,
-       f.id             AS fId,
-       f.address        AS fAddress
-
+SELECT mo.creation_date     AS moCreationDate,
+       mo.status_id         AS moStatusId,
+       moi.count * si.count AS moiCount,
+       i.id                 AS iId,
+       i.name               AS iName,
+       i.price              AS iPrice,
+       mu.id                AS muId,
+       mu.name              AS muName,
+       f.id                 AS fId,
+       f.address            AS fAddress
 
 FROM manufacturing_order mo
          JOIN manufacturing_order_status mos ON mo.status_id = mos.id
