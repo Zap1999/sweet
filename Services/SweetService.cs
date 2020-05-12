@@ -185,26 +185,41 @@ namespace Sweets.Services
             var idToCount = new Dictionary<string, int>();
             foreach (DataRow row in rows)
             {
-                sweets.Add(new Sweet
+                var sweet = new Sweet
                 {
                     Id = (long) row["sId"],
                     Name = (string) row["sName"],
                     Price = (decimal) row["sPrice"],
                     Description = (string) row["sDescription"],
                     CategoryId = (long) row["cId"],
-                    Category =  new Category
+                    Category = new Category
                     {
                         Id = (long) row["cId"],
                         Name = (string) row["cName"],
                         FactoryUnit = null,
                         Sweet = null
                     }
-                });
-                idToCount.Add(
-                    ((long) row["sId"]).ToString(),
-                    (int) row["iCount"]
-                );
+                };
+                if (sweets.Find(s => s.Id == sweet.Id) == null)
+                {
+                    sweets.Add(sweet);
+                }
+
+                var sId = ((long) row["sId"]).ToString();
+                var iCount = (int) row["iCount"];
+                if (!idToCount.ContainsKey(sId))
+                {
+                    idToCount.Add(sId, iCount);
+                }
+                else
+                {
+                    var val = idToCount.First(x => x.Key == sId).Value;
+                    idToCount.Remove(sId);
+                    idToCount.Add(sId, iCount + val);
+                }
             }
+
+            sweets.Sort((x, y) => x.Id == y.Id ? 0 : x.Id > y.Id ? 1 : -1);
 
             return new SweetExpanseDataDto
             {
